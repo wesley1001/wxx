@@ -5,6 +5,8 @@
 
 include("wechatCall.php");
 require "medoo.php";
+//include("function.php");
+
 //define database arg.
 $database = new medoo([
     'database_type' => 'mysql',
@@ -36,14 +38,28 @@ if (!empty($postStr)) {
     $RX_TYPE = $postObj->MsgType;
     switch ($RX_TYPE) {
         case "text":
-            $keyword = trim($postObj->Content);
-            $userDetails = $database->select("stop_users", "*", [
-                "card_num" => $keyword
-            ]);
-            if (count($userDetails) > 0) {
-                $content = "客户名称：" . $userDetails[0]["username"] . "\n安装地址：" . trim($userDetails[0]["addr"]) . "\n联系电话：" . $userDetails[0]["phone1"] . "\n联系电话2：" . $userDetails[0]["phone2"] . "\n产品到期日：" . $userDetails[0]["end_date"];
+            $open_id = $postObj->FromUserName.'/';
+            $result = $database->select("wxid","*",[
+			"AND"=>[
+                "open_id"=>$open_id,
+				"privilege"=>'1'
+            ]
+			]);
+            if (count($result) > 0) {
+                $keyword = trim($postObj->Content);
+                $userDetails = $database->select("stop_users", "*", [
+                    "card_num" => $keyword
+                ]);
+                if (count($userDetails) > 0) {
+				     $content = "客户名称：" . $userDetails[0]["username"] ."\n安装地址：" . trim($userDetails[0]["addr"]) ."\n联系电话：" . $userDetails[0]["phone1"] .  "\n联系电话2：" . $userDetails[0]["phone2"];  
+				for ($i=0;$i<count($userDetails);$i++){
+				$content .=	"\n\n产品名称：" . $userDetails[$i]["productname"] . 	"\n产品到期日：" . $userDetails[$i]["end_date"];
+					}
+                } else {
+                    $content = "没有查询到此客户.请输入正确的智能卡号";
+                }
             } else {
-                $content = "没有查询到此客户.";
+                $content = "非本公司员工或者处于审核期,不能使用后台服务.";
             }
             $resultStr = $wechatObj->responseText($postObj, $content);
             break;

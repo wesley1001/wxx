@@ -53,6 +53,10 @@ class wechatCall
                     $url = "http://115.28.231.224/wxx/unbind.php?open_id=" . $object->FromUserName;
                     $resultStr = $this->responseNews($object, "点击进行解绑智能卡操作", "", "http://115.28.231.224/users.png", $url);
                 }
+                if ($object->EventKey == "bindEmployee") {
+                    $url = "http://115.28.231.224/wxx/bind-employee.php?open_id=" . $object->FromUserName;
+                    $resultStr = $this->responseNews($object, "点击进行员工注册", "", "http://115.28.231.224/users.png", $url);
+                }
                 break;
             default :
                 $contentStr = "Unknow Event: " . $object->Event;
