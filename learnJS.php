@@ -12,13 +12,14 @@ define("APPSECRET","af446b9047db1d6e6d04be04e681e5ff");
 //获取accesstoken
 $access_token=getAccessToken(APPID,APPSECRET);
 
-echo $access_token;
+echo $access_token."\n\n\n";
 ////客服发送消息接口
 $url="https://api.weixin.qq.com/cgi-bin/material/batchget_material?access_token=$access_token";
+//$url = "https://api.weixin.qq.com/cgi-bin/material/get_materialcount?access_token=$access_token";
 $json='{
     "type":"news",
-    "offset":0,
-    "count":10
+    "offset":2,
+    "count":1000
     }';
 $return=post_json($url,$json);
 //
@@ -75,4 +76,5 @@ function post_json($url,$json){
 
     return  $contents;
 }
+
 
