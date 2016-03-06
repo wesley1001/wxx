@@ -34,10 +34,24 @@ function getAccessToken($appId,$appSecret) {
 /* 使用curl来post一个json数据 */
 // CURLOPT_SSL_VERIFYPEER,CURLOPT_SSL_VERIFYHOST - 在做https中要用到
 // CURLOPT_RETURNTRANSFER - 不以文件流返回，带1
-
 function post_json($url,$json){
     $post_url = $url;
     $post_data =$json;
     $ch = curl_init();//初始化
     curl_setopt($ch, CURLOPT_TIMEOUT, '30');//超时时间
-    curl_setopt($ch, CURLOPT_HTTPHEADER, array
+    curl_setopt($ch, CURLOPT_HTTPHEADER, array('Keep-Alive: 300','Connection: keep-alive')) ;
+    curl_setopt($ch, CURLOPT_USERAGENT, 'Mozilla/4.0 (compatible; MSIE 8.0; Windows NT 6.1; WOW64; Trident/4.0; GTB7.4; SLCC2; .NET CLR 2.0.50727; .NET CLR 3.5.30729; .NET CLR 3.0.30729; Media Center PC 6.0; InfoPath.2)');
+    curl_setopt($ch, CURLOPT_POST,1);
+    curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, FALSE);
+    curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, FALSE);
+    curl_setopt($ch, CURLOPT_URL,$post_url);
+    curl_setopt($ch, CURLOPT_POSTFIELDS,$post_data);
+    curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+
+
+    $contents = curl_exec($ch);
+
+    if(curl_errno($ch)){}
+
+    return  $contents;
+}

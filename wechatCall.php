@@ -14,7 +14,9 @@ class wechatCall
 
         //valid signature , option
         if ($this->checkSignature()) {
-            echo $echoStr;
+            return true;
+        } else {
+            return false;
         }
     }
 

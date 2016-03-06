@@ -38,6 +38,10 @@
 <body>
 <div class="container-fluid">
 <div style="margin-top:50px"></div>
+    <?php if (empty($_GET["open_id"])){
+        echo "<span class='text-danger'>请在公众号里打开本页面.</span>";
+        exit;
+    } ?>
 <form class="form-horizontal" method = "get" name = "myForm" action="bind_card.php">
 <label class="control-label">输入姓名</label>
 <input class="form-control" type="text" name="name"/>

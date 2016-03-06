@@ -25,7 +25,7 @@ define("TOKEN", "fiowfwojfiowu4209u20329042o4j3k4");
 //traceHttp();
 $wechatObj = new wechatCall();
 //valid the source.
-$wechatObj->valid();
+//$wechatObj->valid();
 
 $postStr = $GLOBALS["HTTP_RAW_POST_DATA"];
 

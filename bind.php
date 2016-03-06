@@ -38,13 +38,31 @@
 <body>
 <div class="container-fluid">
 <div style="margin-top:50px"></div>
-<form class="form-horizontal" method = "get" name = "myForm" action="bind_card.php">
+    <?php if (empty($_GET["open_id"])){
+        echo "<span class='text-danger'>请在公众号里打开本页面.</span>";
+        exit;
+    } ?>
+<form class="form-horizontal" method = "get" name = "myForm" action="bind_card.php" onsubmit="return checkCardNumber();">
 <label class="control-label">请输入智能卡号</label>
-<input class="form-control" type="text" name="card_number"/>
+<input id="cardNum" class="form-control" type="text" name="card_number"/>
+<label class="control-label">再输入智能卡号</label>
+<input id="repeat" class="form-control" type="text" name="card_number1"/>
 <input type="hidden" name="open_id" value=<?php echo $_GET["open_id"] ?>/>
 <input type="hidden" name="act" value="bind"/>
 <button class="btn btn-default" style="margin-top:10px"  type="submit">绑定</button>
+    <div id="info" class="text-danger"></div>
 </form>
 </div>
+<script>
+    function checkCardNumber() {
+        var card = $("#cardNum").val();
+        var repeat = $("#repeat").val();
+        if (card !== repeat) {
+            $("#info").html("两次输入的卡号不一致,请重新输入");
+            $("#cardNum").focus();
+            return false;
+        }
+    }
+</script>
 </body>
 </html>
